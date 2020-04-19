@@ -6,7 +6,6 @@ from .forms import * #keep eye on
 
 # Create your views here.
 
-
 def index(request):
     return HttpResponse(f'This will be the login to a user page')
 
@@ -23,7 +22,7 @@ def new_account(request):
     context = {
         'form': MemberForm(),
         'method': "post",
-        'target': 'accounts:validate',
+        'target': 'validate',
         'submit': 'Sign Up'
     }
     return render(request, 'accounts/signin.html', context)
@@ -39,7 +38,7 @@ def guest(request):
     context = {
         'form': GuestForm(),
         'method': "post",
-        'target': 'accounts:guest_cont',
+        'target': 'guest_cont',
         'submit': 'Continue',
     }
     return render(request, 'accounts/signin.html', context)
