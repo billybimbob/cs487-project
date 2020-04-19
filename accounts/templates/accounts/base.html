@@ -30,12 +30,14 @@
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link" href="#">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'accounts:login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'accounts:guest' %}">Guest</a>
                     </div>
                 </div>
             </div>
         </nav>
     </header>
+
     <main role="main" class="container">
         <div class="row">
             <div class="col-md-8">

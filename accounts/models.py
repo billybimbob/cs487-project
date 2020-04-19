@@ -12,7 +12,8 @@ class User(models.Model):
         return f'guest user {self.uid}' if not hasattr(self, 'member') \
         else   str(getattr(self, 'member'))
 
-def after30days(cls):
+
+def after30days():
     return timezone.now() + timedelta(days=30)
 
 class Member(models.Model):
