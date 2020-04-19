@@ -2,18 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from .models import Member, User
-from .forms import * #keep eye on
+from .forms import LoginForm, MemberForm, GuestForm
 
 # Create your views here.
-
-def index(request):
-    return HttpResponse(f'This will be the login to a user page')
 
 def login(request):
     context = {
         'form': LoginForm(),
         'method': "get",
-        'target': 'accounts:validate',
+        'target': 'validate',
         'submit': 'Login',
     }
     return render(request, 'accounts/signin.html', context)
@@ -29,9 +26,20 @@ def new_account(request):
 
 def mem_validate(request):
     if request.method == 'POST':
-        pass
+        form = MemberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print('added new member')
     else: #get
-        pass
+        form = LoginForm(request.GET)
+        if form.is_valid():
+            data = form.cleaned_data
+            try:
+                m = getattr(Member, "objects").get(email=data["email"], password=data["password"])
+                print(f'found member {m}')
+            except getattr(Member, "DoesNotExist"):
+                print('invalid credentials')
+
     return HttpResponse(f'check signin option')
 
 def guest(request):

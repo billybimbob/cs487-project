@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your models here.
     
@@ -10,6 +12,8 @@ class User(models.Model):
         return f'guest user {self.uid}' if not hasattr(self, 'member') \
         else   str(getattr(self, 'member'))
 
+def after30days(cls):
+    return timezone.now() + timedelta(days=30)
 
 class Member(models.Model):
     user       = models.OneToOneField(User, on_delete=models.CASCADE, db_index=True)
@@ -18,7 +22,7 @@ class Member(models.Model):
     email      = models.CharField(max_length=20, db_index=True)
     password   = models.CharField(max_length=20)
     start_date = models.DateField(auto_now_add=True)
-    end_date   = models.DateField()
+    end_date   = models.DateField(default=after30days)
 
     def __str__(self):
         return f'member {self.first_name} {self.last_name}'

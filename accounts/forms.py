@@ -1,6 +1,6 @@
 from django import forms
 from django.db import models
-from .models import *
+from .models import Member
 
 class GuestForm(forms.Form): #has nothing right now
     pass
