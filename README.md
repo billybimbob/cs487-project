@@ -2,6 +2,8 @@
 
 Make sure python and django are installed: `python -m django --version`
 
+Also install django-crispy-forms : pip install django-crispy-forms
+
 ## Running
 
 Currently using a development server, to launch: `python manage.py runserver`

@@ -1,11 +1,12 @@
 {% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="content-section">
         <form action="accounts/{{ target }}" method="{{ method }}">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">{{ title }}</legend>
-                {{ form }}
+                {{ form | crispy }}
             </fieldset>
             <div class="form-group">
                 <input type="submit" value="{{ submit }}">
