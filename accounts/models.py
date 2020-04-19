@@ -3,12 +3,12 @@ from django.db import models
 # Create your models here.
     
 class User(models.Model):
-    credit_card = models.CharField(max_length=20, unique=True, blank=True)
-    cvv         = models.CharField(max_length=3, blank=True)
+    uid = models.AutoField(primary_key=True)
     # check if guest with obj.member
 
     def __str__(self):
-        return f'guest user {self.pk}'
+        return f'guest user {self.uid}' if not hasattr(self, 'member') \
+        else   str(getattr(self, 'member'))
 
 
 class Member(models.Model):
