@@ -17,7 +17,7 @@ def login(request):
         'target': 'accounts:validate',
         'submit': 'Login',
     }
-    return HttpResponse(f'login page')
+    return render(request, 'accounts/signin.html', context)
 
 def new_account(request):
     context = {
@@ -26,7 +26,7 @@ def new_account(request):
         'target': 'accounts:validate',
         'submit': 'Sign Up'
     }
-    return HttpResponse(f'sign up page')
+    return render(request, 'accounts/signin.html', context)
 
 def mem_validate(request):
     if request.method == 'POST':
@@ -42,7 +42,7 @@ def guest(request):
         'target': 'accounts:guest_cont',
         'submit': 'Continue',
     }
-    return HttpResponse(f'guest continue')
+    return render(request, 'accounts/signin.html', context)
 
 def guest_signin(request):
     new_guest = User()
