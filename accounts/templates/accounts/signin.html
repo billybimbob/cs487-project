@@ -1,10 +1,32 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+    <div class="content-section">
+        <form action="accounts/{{ target }}" method="{{ method }}">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                {{ form }}
+            </fieldset>
+            <div class="form-group">
+                <input type="submit" value="{{ submit }}">
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
+
+<!--
 <!DOCTYPE html>
 <html xml:lang="en" lang="en">
 
-<!--
+
     this page will be a login screen to login to an account
     should also have tabs to create an account, or login as guest
--->
+
 
 <head>
 
@@ -17,3 +39,4 @@
         <input type="submit" value="{{ submit }}">
     </form>
 </body>
+-->
