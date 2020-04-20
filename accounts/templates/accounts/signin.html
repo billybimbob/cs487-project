@@ -1,49 +1,37 @@
+
 {% extends "accounts/base.html" %}
 {% load crispy_forms_tags %}
+
+{% block right-side %}
+<div class="navbar-nav">
+    <a class="nav-item nav-link {{ login_page }}" href="{% url 'accounts:login' %}">Login</a>
+    <a class="nav-item nav-link {{ create_page }}" href="{% url 'accounts:signup' %}">Sign Up</a>
+    <a class="nav-item nav-link {{ guest_page }}" href="{% url 'accounts:guest' %}">Guest</a>
+</div>
+{% endblock right-side %}
+
 {% block content %}
-    <div class="content-section">
-        <form action="accounts/{{ target }}" method="{{ method }}">
-            {% csrf_token %}        
-            <fieldset class="form-group">
-                {% if not guest_page %}
-                <legend class="border-bottom mb-4">{{ title }}</legend>
-                {% else %}
-                <legend class="border-bottom mb-1">{{ title }}</legend>
-                {% endif %}
-                {{ form | crispy }}
-            </fieldset>
-            <div class="form-group">
-                <input type="submit" value="{{ submit }}">
-            </div>
-        </form>
-        {% if not create_page %}
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{%url 'accounts:signup' %}">Sign Up Now</a>
-            </small>
+<div class="content-section">
+    <form action="accounts/{{ target }}" method="{{ method }}">
+        {% csrf_token %}        
+        <fieldset class="form-group">
+            {% if not guest_page %}
+            <legend class="border-bottom mb-4">{{ title }}</legend>
+            {% else %}
+            <legend class="border-bottom mb-1">{{ title }}</legend>
+            {% endif %}
+            {{ form | crispy }}
+        </fieldset>
+        <div class="form-group">
+            <input type="submit" value="{{ submit }}">
         </div>
-        {% endif %}
-    </div>
-{% endblock content %}
-
-<!--
-<!DOCTYPE html>
-<html xml:lang="en" lang="en">
-
-
-    this page will be a login screen to login to an account
-    should also have tabs to create an account, or login as guest
-
-
-<head>
-
-</head>
-
-<body>
-    <form action="/accounts/{{ target }}" method="{{ method }}">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="{{ submit }}">
     </form>
-</body>
--->
+    {% if not create_page %}
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Need An Account? <a class="ml-2" href="{%url 'accounts:signup' %}">Sign Up Now</a>
+        </small>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

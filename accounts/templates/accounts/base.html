@@ -7,7 +7,6 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
     <link rel="stylesheet" href="{% static 'accounts/main.css' %}">
 
     {% if title %}
@@ -29,11 +28,7 @@
                         <a class="nav-item nav-link" href="#">Home</a>
                     </div>
                     <!-- Navbar Right Side -->
-                    <div class="navbar-nav">
-                        <a class="nav-item nav-link {{ login_page }}" href="{% url 'accounts:login' %}">Login</a>
-                        <a class="nav-item nav-link {{ create_page }}" href="{% url 'accounts:signup' %}">Sign Up</a>
-                        <a class="nav-item nav-link {{ guest_page }}" href="{% url 'accounts:guest' %}">Guest</a>
-                    </div>
+                    {% block right-side %}{% endblock %}
                 </div>
             </div>
         </nav>
