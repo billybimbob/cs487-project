@@ -1,0 +1,33 @@
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">
+                {% if create_page %} Join Today
+                {% else %}           Log In
+                {% endif %}
+            </legend>
+            {{ form | crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">
+                {% if create_page %} Sign Up
+                {% else %}           Log In
+                {% endif %}
+            </button>
+        </div>
+    </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            {% if create_page %}
+            Already Have An Account? <a class="ml-2" href="{% url 'accounts:login' %}">Sign In</a>
+            {% else %}
+            Need An Account? <a class="ml-2" href="{% url 'accounts:signup' %}">Sign Up Now</a>
+            {% endif %}
+        </small>
+    </div>
+</div>
+{% endblock content %}

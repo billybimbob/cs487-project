@@ -1,17 +1,21 @@
 # cs487-project
 
 Make sure python and django are installed:
+
 `python -m django --version`
 
 Also install django-crispy-forms :
+
 `pip install django-crispy-forms`
 
 ## Running
 
 Currently using a development server, to launch:
+
 `python manage.py runserver`
 
 After launching server, app found at:
+
 <http://127.0.0.1:8000/>
 
 ## Structure

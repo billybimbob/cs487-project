@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import login
 from .models import Customer
 from .forms import UserSignupForm, UserUpdateForm
+
 
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
@@ -20,9 +20,10 @@ def signup(request):
             messages.success(request, f'Your account has been created!')
             login(request, user)
             return redirect('/account-info')
-    else:
-        form = UserSignupForm()
-    return render(request, 'accounts/signup.html', {'form': form})
+
+    form = UserSignupForm()
+    return render(request, 'accounts/signin.html', {'create_page': "active", 'form': form})
+
 
 def account_info(request):
     if request.method == 'POST':
@@ -34,4 +35,4 @@ def account_info(request):
     else:
         u_form = UserUpdateForm(instance=request.user)
 
-    return render(request, 'accounts/account-info.html', {'u_form': u_form})
+    return render(request, 'accounts/account.html', {'u_form': u_form})
