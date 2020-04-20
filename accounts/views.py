@@ -9,6 +9,7 @@ from .forms import LoginForm, MemberForm, GuestForm
 def login(request):
     context = {
         'title': 'Parking Login',
+        'login_page': "active",
         'form': LoginForm(),
         'method': "get",
         'target': 'validate',
@@ -19,6 +20,7 @@ def login(request):
 def new_account(request):
     context = {
         'title': 'Create a New Membership',
+        'create_page': "active",
         'form': MemberForm(),
         'method': "post",
         'target': 'validate',
@@ -47,6 +49,7 @@ def mem_validate(request):
 def guest(request):
     context = {
         'title': 'Guest Confirmation',
+        'guest_page': "active",
         'form': GuestForm(),
         'method': "post",
         'target': 'guest_cont',

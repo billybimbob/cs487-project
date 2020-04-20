@@ -30,8 +30,9 @@
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link" href="{% url 'accounts:login' %}">Login</a>
-                        <a class="nav-item nav-link" href="{% url 'accounts:guest' %}">Guest</a>
+                        <a class="nav-item nav-link {{ login_page }}" href="{% url 'accounts:login' %}">Login</a>
+                        <a class="nav-item nav-link {{ create_page }}" href="{% url 'accounts:signup' %}">Sign Up</a>
+                        <a class="nav-item nav-link {{ guest_page }}" href="{% url 'accounts:guest' %}">Guest</a>
                     </div>
                 </div>
             </div>
