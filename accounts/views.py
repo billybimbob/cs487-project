@@ -4,9 +4,9 @@ from django.contrib.auth import login
 from .models import Customer
 from .forms import UserSignupForm, UserUpdateForm
 
-
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
+
 
 def signup(request):
     if request.method == 'POST':
@@ -20,8 +20,8 @@ def signup(request):
             messages.success(request, f'Your account has been created!')
             login(request, user)
             return redirect('/account-info')
-
-    form = UserSignupForm()
+    else:
+        form = UserSignupForm()
     return render(request, 'accounts/signin.html', {'create_page': "active", 'form': form})
 
 
