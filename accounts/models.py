@@ -50,6 +50,10 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    def __str__(self):
+        return f'user {self.email}'
+
+
 def after30days(cls):
     return timezone.now() + timedelta(days=30)
     
@@ -57,7 +61,6 @@ class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
     start_date = models.DateField(auto_now_add=True)
     end_date   = models.DateField(default=after30days)
-
 
 
 

@@ -18,7 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('accounts.urls')), # could change to accounts page
-    path('payments', include('payments.urls')),
-    path('parkview', include('parkview.urls')),
+    path('payments/', include('payments.urls')),
+    path('parkview/', include('parkview.urls')),
     path('admin/', admin.site.urls),
 ]
