@@ -19,7 +19,7 @@ def signup(request):
             user.save()
             messages.success(request, f'Your account has been created!')
             login(request, user)
-            return redirect(reverse(account_info))
+            return redirect('/account-info')
     else:
         form = UserSignupForm()
     return render(request, 'accounts/signup.html', {'form': form})
@@ -30,7 +30,7 @@ def account_info(request):
         if u_form.is_valid():
             u_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect(reverse(account_info))
+            return redirect('/account-info')
     else:
         u_form = UserUpdateForm(instance=request.user)
 
