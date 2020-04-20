@@ -1,78 +1,33 @@
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
-from django.views import generic
-from .models import Member, User
-from . import forms
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import UserSignupForm, UserUpdateForm
 
-# Create your views here.
+def home(request):
+    return render(request, 'accounts/home.html', {'title': 'Home'})
 
-def login(request):
-    context = {
-        'title': 'Parking Login',
-        'login_page': "active",
-        'form': forms.LoginForm(),
-        'method': "get",
-        'target': 'validate',
-        'submit': 'Login',
-    }
-    return render(request, 'accounts/signin.html', context)
-
-def new_account(request):
-    context = {
-        'title': 'Create a New Membership',
-        'create_page': "active",
-        'form': forms.MemberForm(),
-        'method': "post",
-        'target': 'validate',
-        'submit': 'Sign Up'
-    }
-    return render(request, 'accounts/signin.html', context)
-
-def mem_validate(request):
-    mem = None
+def signup(request):
     if request.method == 'POST':
-        form = forms.MemberForm(request.POST)
+        form = UserSignupForm(request.POST)
         if form.is_valid():
-            user = User()
-            user.save()
-            mem = form.save()
-            mem.user = user
-            print('added new member')
-    else: #get
-        form = forms.LoginForm(request.GET)
-        if form.is_valid():
-            data = form.cleaned_data
-            try:
-                mem = getattr(Member, "objects").get(email=data["email"], password=data["password"])
-            except getattr(Member, "DoesNotExist"):
-                print('invalid credentials')
+            form.save()
+            messages.success(request, f'Your account has been created! You are now able to log in.')
+            return redirect('login')
+    else:
+        form = UserSignupForm()
+    return render(request, 'accounts/signup.html', {'form': form})
 
-    if mem is not None:
-        request.session['id'] = mem.user.uid
-        print(f'successfully logged in as {request.session["id"]}')
+def accountInfo(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        if u_form.is_valid():
+            u_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('account-info')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
 
-    return HttpResponse(f'check signin option')
-
-def guest(request):
     context = {
-        'title': 'Guest Confirmation',
-        'guest_page': "active",
-        'form': forms.GuestForm(),
-        'method': "post",
-        'target': 'guest_cont',
-        'submit': 'Continue',
+        'u_form': u_form,
     }
-    return render(request, 'accounts/signin.html', context)
 
-def guest_signin(request):
-    new_guest = User()
-    new_guest.save()
-    request.session['id'] = new_guest.uid
-    return HttpResponse(f'signed in as guest {new_guest.uid}')
-
-
-def details(request, user_id):
-    return HttpResponse(f'Member profile for {user_id}', user_id)
-
-class DetailsView(generic.DetailView):
-    model = Member
+    return render(request, 'accounts/account-info.html', context)

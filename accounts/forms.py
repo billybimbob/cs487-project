@@ -1,18 +1,18 @@
 from django import forms
-from django.db import models
-from .models import Member
+from accounts.models import User
+from django.contrib.auth.forms import UserCreationForm
 
-class GuestForm(forms.Form): #has nothing right now
-    pass
 
-class LoginForm(forms.Form):
-    email    = forms.CharField(max_length=20)
-    password = forms.CharField(max_length=20)
 
-class MemberForm(forms.ModelForm):
+class UserSignupForm(UserCreationForm):
+
     class Meta:
-        model  = Member
-        fields = ['first_name', 'last_name', 'email', 'password']
+        model = User
+        fields = ['email', 'first_name', 'last_name', 'password1', 'password2']
 
-class TempLicensesForm(forms.Form):
-    pass
+
+class UserUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name']
