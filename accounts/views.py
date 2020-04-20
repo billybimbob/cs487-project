@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import login
+from .models import Customer
 from .forms import UserSignupForm, UserUpdateForm
 
 def home(request):
@@ -11,7 +12,11 @@ def signup(request):
     if request.method == 'POST':
         form = UserSignupForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            customer = Customer()
+            customer.save()
+            user.customer = customer
+            user.save()
             messages.success(request, f'Your account has been created!')
             login(request, user)
             return redirect(reverse(account_info))
