@@ -4,9 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from datetime import timedelta
 
-class Customer(models.Model):
-    customer_id = models.AutoField(primary_key=True)
-
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -39,6 +36,13 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+class Customer(models.Model):
+    cid = models.AutoField(primary_key=True)
+
+    def __str__(self):
+        return f'customer {self.cid}'
+
+
 class User(AbstractUser):
     """User model."""
     username = None
@@ -61,6 +65,9 @@ class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)    
     start_date = models.DateField(auto_now_add=True)
     end_date   = models.DateField(default=after30days)
+
+    def __str__(self):
+        return f'member of {self.user}'
 
 
 
