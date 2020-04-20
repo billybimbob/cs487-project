@@ -3,20 +3,26 @@
 {% block content %}
     <div class="content-section">
         <form action="accounts/{{ target }}" method="{{ method }}">
-            {% csrf_token %}
+            {% csrf_token %}        
             <fieldset class="form-group">
+                {% if not guest_page %}
                 <legend class="border-bottom mb-4">{{ title }}</legend>
+                {% else %}
+                <legend class="border-bottom mb-1">{{ title }}</legend>
+                {% endif %}
                 {{ form | crispy }}
             </fieldset>
             <div class="form-group">
                 <input type="submit" value="{{ submit }}">
             </div>
         </form>
+        {% if not create_page %}
         <div class="border-top pt-3">
             <small class="text-muted">
                 Need An Account? <a class="ml-2" href="{%url 'accounts:signup' %}">Sign Up Now</a>
             </small>
         </div>
+        {% endif %}
     </div>
 {% endblock content %}
 
