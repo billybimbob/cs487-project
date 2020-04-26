@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     #'parkview.apps.ParkviewConfig',
-    #'payments.apps.PaymentsConfig',
+    'payments.apps.PaymentsConfig',
     'crispy_forms',
 ]
 

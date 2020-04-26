@@ -3,8 +3,8 @@ from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import ugettext_lazy
 from .models import User, Member, Customer
 
-admin.register(Member)
-admin.register(Customer)
+admin.site.register(Member)
+admin.site.register(Customer)
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):

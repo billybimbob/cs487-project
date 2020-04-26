@@ -4,9 +4,10 @@ Make sure python and django are installed:
 
 `python -m django --version`
 
-Also install django-crispy-forms :
+Also install django-crispy-forms and django-credit-cards:
 
 `pip install django-crispy-forms`
+`pip install django-credit-cards`
 
 ## Running
 

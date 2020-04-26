@@ -9,11 +9,16 @@
     </div>
 </div>
 <div class="content-section">
-    <div class="media">
-        <div class="media-body">
-            <h2 class="account-heading">{{ user.first_name }}'s Payment Methods</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Card</legend>
+            {{ form | crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Add</button>
         </div>
-    </div>
+    </form>
 </div>
 {% endblock content %}
 

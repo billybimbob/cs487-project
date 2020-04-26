@@ -1,15 +1,14 @@
 from django.db import models
 from accounts.models import Customer
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
-
 # Create your models here.
 
 class CreditCard(models.Model):
     cid   = models.OneToOneField(Customer, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    cc_number = CardNumberField(_('card number'))
-    cc_expiry = CardExpiryField(_('expiration date'))
-    cc_code = SecurityCodeField(_('security code'))
+    cc_number = CardNumberField('card number')
+    cc_expiry = CardExpiryField('expiration date')
+    cc_code = SecurityCodeField('security code')
 
     def __str__(self):
         return f'Card: {self.cc_number}'

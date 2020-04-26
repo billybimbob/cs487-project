@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from .models import Customer
-from .forms import UserSignupForm, UserUpdateForm
+from .forms import UserSignupForm, UserUpdateForm, AddCreditCard
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
@@ -24,7 +25,7 @@ def signup(request):
         form = UserSignupForm()
     return render(request, 'accounts/signin.html', {'create_page': "active", 'form': form})
 
-
+@login_required
 def account_info(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
@@ -39,12 +40,19 @@ def account_info(request):
 
 
 def account_spots(request):
-
-
     return render(request, 'accounts/spots.html', {'title':'Spots'})
 
 
 def account_payments(request):
+    if request.method == 'POST':
+        add_form = AddCreditCard(request.POST, instance=request.user)
+        if add_form.is_valid():
+            credit_card = add_form.save(commit=False)
+            #credit_card.cid = user.cid
+            credit_card.save()
+            messages.success(request, f'Your card has been updated!')
+            return redirect('/account-info')
+    else: 
+        add_form = AddCreditCard(instance=request.user)
 
-
-    return render(request, 'accounts/payments.html', {'title':'Payments'})
+    return render(request, 'accounts/payments.html', {'title':'Payments','form': add_form})
