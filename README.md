@@ -6,12 +6,15 @@ Make sure python and django are installed:
 
 Also install django-crispy-forms and django-credit-cards:
 
-`pip install django-crispy-forms`
-`pip install django-credit-cards`
+`pip install django-crispy-forms django-credit-cards`
 
 ## Running
 
 Currently using a development server, to launch:
+
+`python manage.py makemigrations`
+
+`python manage.py migrate`
 
 `python manage.py runserver`
 

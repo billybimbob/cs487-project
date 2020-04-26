@@ -48,7 +48,7 @@ def account_payments(request):
         add_form = AddCreditCard(request.POST, instance=request.user)
         if add_form.is_valid():
             credit_card = add_form.save(commit=False)
-            #credit_card.cid = user.cid
+            credit_card.cid = request.user.customer
             credit_card.save()
             messages.success(request, f'Your card has been updated!')
             return redirect('/account-info')
