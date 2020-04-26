@@ -36,3 +36,15 @@ def account_info(request):
         u_form = UserUpdateForm(instance=request.user)
 
     return render(request, 'accounts/account.html', {'u_form': u_form})
+
+
+def account_spots(request):
+
+
+    return render(request, 'accounts/spots.html', {'title':'Spots'})
+
+
+def account_payments(request):
+
+
+    return render(request, 'accounts/payments.html', {'title':'Payments'})
