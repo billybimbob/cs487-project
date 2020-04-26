@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
-from django.utils.translation import ugettext_lazy as _
-
+from django.utils.translation import ugettext_lazy
 from .models import User, Member, Customer
 
 
@@ -10,11 +9,18 @@ class UserAdmin(DjangoUserAdmin):
     """Define admin model for custom User model with no email field."""
 
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (None, {
+            'fields': ('email', 'password')
+        }),
+        (ugettext_lazy('Personal info'), {
+            'fields': ('first_name', 'last_name')
+        }),
+        (ugettext_lazy('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+        }),
+        (ugettext_lazy('Important dates'), {
+            'fields': ('last_login', 'date_joined')
+        }),
     )
     add_fieldsets = (
         (None, {

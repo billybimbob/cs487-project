@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy
 from django.utils import timezone
 from datetime import timedelta
 
@@ -47,22 +47,21 @@ class User(AbstractUser):
     """User model."""
     username = None
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
-    email = models.EmailField(_('email address'), unique=True)
+    email    = models.EmailField(ugettext_lazy('email address'), unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
     objects = UserManager()
 
     def __str__(self):
         return f'user {self.email}'
 
 
-def after30days(cls):
+def after30days():
     return timezone.now() + timedelta(days=30)
     
 class Member(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)    
+    user       = models.OneToOneField(User, on_delete=models.CASCADE)    
     start_date = models.DateField(auto_now_add=True)
     end_date   = models.DateField(default=after30days)
 
