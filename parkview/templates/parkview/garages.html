@@ -1,0 +1,15 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<h1>Parking Garages Near Me</h1>
+
+{% if nearby_garages %}
+    <ul>
+    {% for garage in nearby_garages %}
+        <li>Garage {{ garage }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No garages are nearby</p>
+{% endif %}
+
+{% endblock content %}

@@ -41,14 +41,14 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class Customer(models.Model):
+class Customer(models.Model): # for tracking payments
     cid = models.AutoField(primary_key=True)
 
     def __str__(self):
         return f'customer {self.cid}'
 
 
-class User(AbstractUser):
+class User(AbstractUser): # an account
     """User model."""
     username = None
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)

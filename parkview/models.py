@@ -1,7 +1,23 @@
 from django.db import models
-from accounts.models import License
+from accounts.models import Member
 
 # Create your models here.
+
+class License(models.Model):
+    value = models.CharField(max_length=7, unique=True)
+    owner = models.ForeignKey(Member, on_delete=models.PROTECT, related_name='licenses')
+    
+    def __str__(self):
+        return f'temp license {self.value} for {self.owner}'
+
+
+class TempLicense(models.Model):
+    plate  = models.OneToOneField(License, on_delete=models.CASCADE, related_name='temporary')
+    expire = models.DateField()
+
+    def __str__(self):
+        return str(self.plate)
+
 
 class ParkingGarage(models.Model):
     block    = models.IntegerField()
