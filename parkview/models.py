@@ -20,20 +20,21 @@ class TempLicense(models.Model):
 
 
 class ParkingGarage(models.Model):
-    block    = models.IntegerField()
+    name     = models.CharField(max_length=30)
     street   = models.CharField(max_length=100)
     city     = models.CharField(max_length=100)
     country  = models.CharField(max_length=25)
     zip_code = models.IntegerField()
 
     def __str__(self):
-        return f'garage at {self.street} in {self.city}, {self.country}'
+        return f'{self.name} on {self.street} in {self.city}, {self.country}'
 
 
 class ParkingSpot(models.Model):
+    floor   = models.IntegerField(default=1)
     used_by = models.OneToOneField(License, on_delete=models.PROTECT, blank=True)
     garage  = models.ForeignKey(ParkingGarage, on_delete=models.PROTECT, related_name='spots')
 
     def __str__(self):
         user = 'no one' if self.used_by is None else self.used_by
-        return f'parking spot {self.garage} used by {user}'
+        return f'spot in {self.garage} used by {user}'

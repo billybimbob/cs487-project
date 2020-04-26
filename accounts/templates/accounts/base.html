@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://static.thenounproject.com/png/72-200.png">
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -27,6 +28,7 @@
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'accounts:home' %}">Home</a>
+                        <a class="nav-item nav-link" href="{% url 'parkview:garages' %}">Garages</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
@@ -45,7 +47,7 @@
 
     <main role="main" class="container">
         <div class="row">
-            <div class="col-7">
+            <div class="col-9">
                 {% if messages %}
                     {% for message in messages%}
                         <div class="alert alert-{{ message.tags }}">
