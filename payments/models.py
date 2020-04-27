@@ -5,7 +5,7 @@ from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeFie
 
 class CreditCard(models.Model):
     customer   = models.OneToOneField(Customer, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    cc_name = models.CharField(max_length=50)
     cc_number = CardNumberField('card number')
     cc_expiry = CardExpiryField('expiration date')
     cc_code = SecurityCodeField('security code')
@@ -20,5 +20,5 @@ class Payment(models.Model):
     amount  = models.IntegerField()
 
     def __str__(self):
-        user = getattr(self.paid_by, 'user')
-        return f'{self.amount} paid by {user} on {self.date}'
+        name = getattr(self.paid_by, 'cc_name')
+        return f'{self.amount} paid by {name} on {self.date}'

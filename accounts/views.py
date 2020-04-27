@@ -3,7 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import login
 from .models import Customer
 from payments.models import CreditCard
-from .forms import UserSignupForm, UserUpdateForm, AddCreditCard
+from .forms import UserSignupForm, UserUpdateForm
+from payments.forms import AddCreditCard
 from django.contrib.auth.decorators import login_required
 
 def home(request):
@@ -50,7 +51,7 @@ def account_payments(request):
         if add_form.is_valid():
             credit_card = CreditCard()
             credit_card.customer = request.user.customer
-            credit_card.name = add_form.cleaned_data['name']
+            credit_card.cc_name = add_form.cleaned_data['cc_name']
             credit_card.cc_number = add_form.cleaned_data['cc_number']
             credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']
             credit_card.cc_code = add_form.cleaned_data['cc_code']
