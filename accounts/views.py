@@ -32,7 +32,7 @@ def signup(request):
 
 @login_required
 def confirm_member(request):
-    if request.user.member is None:
+    if hasattr(request.user, 'member'):
         return redirect('/account-info')
 
     elif request.method == 'POST':
@@ -42,12 +42,14 @@ def confirm_member(request):
             response = 'cancel'
 
         if response == 'confirm':
-            if request.user.customer.credit_card is None:
-                messages.warning(request, 'you must add a credit card')
-                redirect('/account-payments')
+            credit_card = CreditCard.objects.get(customer=request.user.customer)
             
-            credit_card = request.user.customer.credit_card
-            member = Member(request.user)
+            if credit_card is None:
+                print('redirecting')
+                messages.warning(request, 'you must add a credit card')
+                return redirect('/account-payments')
+            
+            member = Member(user=request.user)
             payment = Payment(paid_by=credit_card, amount=10) # 10 bucks
             member.save()
             payment.save()
@@ -89,6 +91,7 @@ def account_spots(request):
 
 @login_required
 def account_payments(request):
+    print('got here')
     if request.method == 'POST':
         add_form = AddCreditCard(request.POST, instance=request.user)
         if add_form.is_valid():
