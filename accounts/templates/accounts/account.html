@@ -28,11 +28,13 @@
                 <h3 class="account-heading">License Plates</h3>
                 <ul class="list-group">
                     {% for plate in plates %}
-                        <li class="list-group-item">{{ plate.value }}</li>
+                        <li class="list-group-item">Plate: {{ plate.value }}</li>
                     {% endfor %}
                 </li>
             </div>
         </div>
+    </div>
+    <div class="content-section">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
