@@ -13,11 +13,13 @@ ul {
 }
 
 .bg-steel {
-    background-color: #5f788a;
+    background-color: #6b24bd;
+    padding-top: 20px;
 }
 
 .site-header .navbar-nav .nav-link {
     color: #cbd5db;
+    font-size: 20px;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -83,18 +85,22 @@ a.article-title:hover {
     font-size: 2.5rem;
 }
 
-.spots {
-
+.display-style {
+font: helvetica;
+font-size: 72px;
+padding-bottom: 36px;
 }
 
-.spots td:hover {
-    color: #444444;
+.mr-4 {
+font-size: 30px;
 }
 
-.free {
-    background-color: #444
+.jumbo {
+padding-top: 40px;  
 }
 
-.used {
-    background-color: #428bca;
+.brk {
+display: block;
+border-style: solid;
+border-width: 1.8px;
 }

@@ -1,12 +1,16 @@
 {% extends "accounts/base.html" %}
 {% block content %}
+
+<div class="container jumbo">
 <h1>Parking Garages Near Me</h1>
+<hr class="break brk">
+</div>
 
 {% if nearby_garages %}
     <ul class="list-group">
     {% for garage in nearby_garages %}
         <li class="list-group-item">
-            <a href="{% url 'parkview:spots' garage.id %}">{{ garage.name }}</a>
+            <a class="list-group-item-action stretched-link" href="{% url 'parkview:spots' garage.id %}">{{ garage.name }}</a>
         </li>
     {% endfor %}
     </ul>

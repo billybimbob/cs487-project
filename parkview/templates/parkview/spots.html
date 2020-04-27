@@ -4,26 +4,30 @@
 <h1>{{ garage.name }}</h1>
 
 <h2>Information<h2>
-<ul>
-    <li>{{ garage.street }}</li>
-    <li>{{ garage.city }}, {{ garage.country }}</li>
-    <li>{{ garage.zip_code }}</li>
+<ul class="list-inline">
+    <li class="col-sm-3">{{ garage.street }}</li>
+    <li class="col-sm-9">{{ garage.city }}, {{ garage.country }}</li>
+    <li class="col-sm-3">{{ garage.zip_code }}</li>
 </ul>
 
 <h2>Parking Spots</h2>
 {% for floor in floors %}
     <h3>Floor {{ forloop.counter }}</h3>
-    <div class="list-group">
+    <ul class="list-group d-flex flex-row flex-wrap">
     {% for spot in floor %}
-        <a class="list-group-item" href="{% url 'parkview:parkspot' spot.id %}">
         {% if spot.used_by is None %}
-            Open
+            <li class="col-md-6 list-group-item list-group-item-action">
+                <a class="list-group-item-action stretched-link" href="{% url 'parkview:parkspot' spot.id %}">
+                    Open
+                </a>
+            </li>
         {% else %}
-            Used by {{ spot.used_by }}
+            <li class="col-md-6 list-group-item disabled">
+                Used by {{ spot.used_by }}
+            </li>
         {% endif %}
-        </a>
     {% endfor %}
-    </div>
+    </ul>
 {% endfor %}
 
 {% endblock content %}
