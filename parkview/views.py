@@ -8,17 +8,30 @@ from .forms import AddLicenseForm
 
 # Create your views here.
 
-def garages(request):
-    return HttpResponse('these will be all the garages')
-
 def spots(request, garage_id):
     garage = get_object_or_404(ParkingGarage, pk=garage_id)
     floors = [garage.spots.filter(floor=num) for num in range(garage.floors)]
     context = {'garage': garage, 'floors': floors}
     return render(request, 'parkview/spots.html', context)
 
+
 def parkspot(request, spot_id):
-    return HttpResponse(f'looking at id {spot_id}')
+    spot = get_object_or_404(ParkingSpot, pk=spot_id)
+    print(f'method {request.method}')
+    if request.method == 'POST':
+        try:
+            response = request.POST['confirm']
+        except Exception:
+            response = 'cancel'
+            
+        if response == 'confirm':
+            request.session['spot'] = spot_id
+            return redirect(f'/parkview/license')
+        else:
+            return redirect(f'/parkview/{spot.garage.id}')
+            
+    return render(request, 'parkview/spot-confirm.html', {'spot': spot})
+
 
 def add_license(request):
     if request.method == 'POST':
@@ -51,7 +64,6 @@ def add_license(request):
             **{'licenses': request.user.customer.licenses.all()},
             **context
         } 
-
 
     return render(request, 'parkview/add-license.html', context)
 

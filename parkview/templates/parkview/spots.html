@@ -16,7 +16,7 @@
     <h3>Floor {{ forloop.counter }}</h3>
     <div class="list-group d-flex flex-row flex-wrap">
     {% for spot in floor %}
-        {% if forloop.counter|divisibleby:2 %}
+        {% if spot.used_by is None %}
             <a class="col-md-6 list-group-item list-group-item-action"
                 href="{% url 'parkview:parkspot' spot.id %}">
                 Open
