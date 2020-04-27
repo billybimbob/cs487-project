@@ -13,11 +13,13 @@ ul {
 }
 
 .bg-steel {
-    background-color: #5f788a;
+    background-color: #6b24bd;
+    padding-top: 20px;
 }
 
 .site-header .navbar-nav .nav-link {
     color: #cbd5db;
+    font-size: 20px;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -81,4 +83,24 @@ margin-bottom: 16px;
 
 .account-heading {
 font-size: 2.5rem;
+}
+
+.display-style {
+font: helvetica;
+font-size: 72px;
+padding-bottom: 36px;
+}
+
+.mr-4 {
+font-size: 30px;
+}
+
+.jumbo {
+padding-top: 40px;  
+}
+
+.brk {
+display: block;
+border-style: solid;
+border-width: 1.8px;
 }
