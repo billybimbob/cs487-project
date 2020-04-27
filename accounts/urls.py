@@ -10,6 +10,7 @@ urlpatterns = [
         template_name='accounts/signin.html', extra_context={'login_page': "active"}), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='accounts/logout.html'), name='logout'),
     path('account-info/', views.account_info, name='account-info'),
+    path('account-member', views.confirm_member, name='confirm-member'),
     path('account-spots/', views.account_spots, name='account-spots'),
     path('account-payments/', views.account_payments, name='account-payments'),
 ]

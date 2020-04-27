@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login
-from .models import Customer
-from payments.models import CreditCard
-from .forms import UserSignupForm, UserUpdateForm
-from payments.forms import AddCreditCard
 from django.contrib.auth.decorators import login_required
+from django.utils.datastructures import MultiValueDictKeyError
+
+from .models import Customer, Member
+from .forms import UserSignupForm, UserUpdateForm
+from payments.models import CreditCard, Payment
+from payments.forms import AddCreditCard
 from parkview.forms import AddLicenseForm
 from parkview.models import License
 
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
-
 
 def signup(request):
     if request.method == 'POST':
@@ -28,6 +29,33 @@ def signup(request):
     else:
         form = UserSignupForm()
     return render(request, 'accounts/signin.html', {'create_page': "active", 'form': form})
+
+@login_required
+def confirm_member(request):
+    if request.user.member is None:
+        return redirect('/account-info')
+
+    elif request.method == 'POST':
+        try:
+            response = request.POST['confirm']
+        except MultiValueDictKeyError:
+            response = 'cancel'
+
+        if response == 'confirm':
+            if request.user.customer.credit_card is None:
+                messages.warning(request, 'you must add a credit card')
+                redirect('/account-payments')
+            
+            credit_card = request.user.customer.credit_card
+            member = Member(request.user)
+            payment = Payment(paid_by=credit_card, amount=10) # 10 bucks
+            member.save()
+            payment.save()
+            messages.success(request, 'Your membership was successfully created!')
+        # cancel and success
+        return redirect('/account-info')
+
+    return render(request, 'accounts/member.html', {'user': request.user})
 
 @login_required
 def account_info(request):

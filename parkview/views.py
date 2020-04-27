@@ -6,6 +6,7 @@ from django.contrib import messages
 from accounts.models import Customer
 from .models import ParkingGarage, ParkingSpot, License
 from .forms import AddLicenseForm
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 
@@ -18,11 +19,10 @@ def spots(request, garage_id):
 
 def parkspot(request, spot_id):
     spot = get_object_or_404(ParkingSpot, pk=spot_id)
-    print(f'method {request.method}')
     if request.method == 'POST':
         try:
             response = request.POST['confirm']
-        except Exception:
+        except MultiValueDictKeyError:
             response = 'cancel'
             
         if response == 'confirm':
@@ -66,10 +66,8 @@ def add_license(request):
         'form': add_form
     }
     if str(request.user) != 'AnonymousUser':
-        context = {
-            **{'licenses': request.user.customer.licenses.all()},
-            **context
-        } 
+        licenses = request.user.customer.licenses.all()
+        context = {**context, **{'licenses': licenses}} 
 
     return render(request, 'parkview/add-license.html', context)
 

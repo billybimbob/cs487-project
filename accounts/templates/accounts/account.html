@@ -56,6 +56,15 @@
           <li class="list-group-item list-group-item-light"><a href="{% url 'accounts:account-info' %}">Info</a></li>
           <li class="list-group-item list-group-item-light"><a href="{% url 'accounts:account-payments' %}">Payment</a></li>
           <li class="list-group-item list-group-item-light"><a href="{% url 'accounts:account-spots' %}">Spots</a></li>
+          <li class="list-group-item list-group-item-light">
+            {% if user.member %}
+                <a href='#'>Is a member</a>
+            {% else %}
+                <a href="{% url 'accounts:account-member' %}">
+                Member Sign Up
+                </a>
+            {% endif %}
+          </li>
       </ul>
   </div>
 </div>
