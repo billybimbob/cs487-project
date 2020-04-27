@@ -1,4 +1,36 @@
 {% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-<h1>Payment Complete</h1>
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+            <h2 class="account-heading">Order Complete</h2>
+        </div>
+    </div>
+</div>
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+            <h4>Thank you for your order {{ billing_name }}!</h4>
+            <p>Spot: {{ spot }} <p>
+            <p>Paid: ${{ amount }} using card eding in {{ cc_number.12 }}{{ cc_number.13 }}{{ cc_number.14 }}{{ cc_number.15 }} </p>
+        </div>
+    </div>
+</div>
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+            {% if user.is_authenticated %}
+                <small class="text-muted">
+                    <a href="{% url 'accounts:account-spots' %}">Return to account</a>
+                </small>
+            {% else %}
+                <small class="text-muted">
+                    <a href="{% url 'accounts:home' %}">Return to home</a>
+                </small>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
