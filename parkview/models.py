@@ -36,6 +36,9 @@ class ParkingSpot(models.Model):
     used_by = models.OneToOneField(License, on_delete=models.PROTECT, blank=True, null=True)
     garage  = models.ForeignKey(ParkingGarage, on_delete=models.PROTECT, related_name='spots')
 
+    def user(self):
+        return 'no one' if self.used_by is None \
+          else self.used_by
+
     def __str__(self):
-        user = 'no one' if self.used_by is None else self.used_by
-        return f'{self.garage} on floor {self.floor} used by {user}'
+        return f'{self.garage.name} on floor {self.floor} used by {self.user()}'

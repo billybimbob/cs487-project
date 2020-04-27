@@ -24,6 +24,12 @@ def payment_page(request):
             payment.amount = 0
             payment.save()
             messages.success(request, f'Your payment was successful')
+
+            request.session['billing_name'] = credit_card.cc_name
+            request.session['amount'] = payment.amount
+            request.session['cc_number'] = credit_card.cc_number
+            request.session['spot'] = 'Spot'
+
             return redirect('/payments/payment-complete')
     else: 
         add_form = AddCreditCard()
@@ -39,7 +45,11 @@ def payment_page(request):
 def payment_complete(request):
 
     context = {
-        'title': 'Payment Complete'
+        'title': 'Payment Complete',
+        'billing_name': request.session['billing_name'],
+        'amount': request.session['amount'],
+        'cc_number': request.session['cc_number'],
+        'spot': request.session['spot']
     }
 
     return render(request, 'payments/payment-complete.html', context)

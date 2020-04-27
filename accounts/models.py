@@ -73,6 +73,3 @@ class Member(models.Model):
     def __str__(self):
         return f'member of {self.user}'
 
-
-
-
