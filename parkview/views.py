@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.views import generic
+from django.contrib import messages
 
 from accounts.models import Customer
 from .models import ParkingGarage, ParkingSpot, License
@@ -36,25 +37,30 @@ def parkspot(request, spot_id):
 def add_license(request):
     if request.method == 'POST':
         add_form = AddLicenseForm(request.POST)
-        if add_form.is_valid():
-            if str(request.user) != 'AnonymousUser':
-                owner = request.user.customer
+        try:
+            if add_form.is_valid():
+                if str(request.user) != 'AnonymousUser':
+                    owner = request.user.customer
+                else:
+                    customer = Customer()
+                    customer.save()
+                    owner = customer
+                    
+                plate = License(value=add_form.cleaned_data['value'], owner=owner)
+                plate.save()
             else:
-                customer = Customer()
-                customer.save()
-                owner = customer
-                
-            plate = License(value=add_form.cleaned_data['value'], owner=owner)
-            plate.save()
-
-            if str(request.user) != 'AnonymousUser':
-                return redirect('/accounts-payments')
-            else:
+                license_id = request.POST['choice']
+                plate = License.objects.filter(id=license_id) 
+            
+            if str(request.user) == 'AnonymousUser':
                 request.session['cid'] = plate.owner.cid
-                return redirect('/payments/payment')
-    else: 
-        add_form = AddLicenseForm()
+            return redirect('/payments/payment')
+                
+        except Exception: #figure out actual exception
+            messages.error(request, f'You must select a license.')
+            # fallthrough
 
+    add_form = AddLicenseForm()
     context = {
         'title': 'Payments',
         'form': add_form
@@ -66,6 +72,7 @@ def add_license(request):
         } 
 
     return render(request, 'parkview/add-license.html', context)
+
 
 class GaragesView(generic.ListView):
     template_name = 'parkview/garages.html'

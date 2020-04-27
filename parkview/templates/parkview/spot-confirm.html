@@ -1,20 +1,8 @@
-{% extends "accounts/base.html" %}
-{% block content %}
-    
-<div class="content-section">
-    <h1>Confirm Selection</h1>
-    <p>
-        Do you want to select this spot in {{ spot.garage.name }}
-        on floor {{ spot.floor }}?
-    </p>
-    <form method="POST">
-    {% csrf_token %}
-        <input type="radio" name="confirm" id="choice1" value="confirm">
-        <label for="choice1">Confirm</label><br>
-        <input type="radio" name="confirm" id="choice2" value="cancel">
-        <label for="choice2">Cancel</label><br>
-        
-        <input type="submit" value="Confirm">
-    </form>
-</div>
-{% endblock content %}
+{% extends "parkview/confirm.html" %}
+{% block prompt %}
+<h1>Confirm Selection</h1>
+<p>
+    Do you want to select this spot in {{ spot.garage.name }}
+    on floor {{ spot.floor }}?
+</p>
+{% endblock prompt %}

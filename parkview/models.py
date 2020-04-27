@@ -26,6 +26,7 @@ class ParkingGarage(models.Model):
     country  = models.CharField(max_length=25)
     zip_code = models.IntegerField()
     floors   = models.IntegerField()
+    price    = models.IntegerField()
 
     def __str__(self):
         return f'{self.name} on {self.street} in {self.city}, {self.country}'
