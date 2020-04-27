@@ -25,6 +25,7 @@ class ParkingGarage(models.Model):
     city     = models.CharField(max_length=100)
     country  = models.CharField(max_length=25)
     zip_code = models.IntegerField()
+    floors   = models.IntegerField()
 
     def __str__(self):
         return f'{self.name} on {self.street} in {self.city}, {self.country}'
@@ -32,9 +33,9 @@ class ParkingGarage(models.Model):
 
 class ParkingSpot(models.Model):
     floor   = models.IntegerField(default=1)
-    used_by = models.OneToOneField(License, on_delete=models.PROTECT, blank=True)
+    used_by = models.OneToOneField(License, on_delete=models.PROTECT, blank=True, null=True)
     garage  = models.ForeignKey(ParkingGarage, on_delete=models.PROTECT, related_name='spots')
 
     def __str__(self):
         user = 'no one' if self.used_by is None else self.used_by
-        return f'spot in {self.garage} used by {user}'
+        return f'{self.garage} on floor {self.floor} used by {user}'

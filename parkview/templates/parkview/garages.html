@@ -5,7 +5,9 @@
 {% if nearby_garages %}
     <ul>
     {% for garage in nearby_garages %}
-        <li>Garage {{ garage }}</li>
+        <li>
+            <a href="{% url 'parkview:spots' garage.id %}">{{ garage.name }}</a>
+        </li>
     {% endfor %}
     </ul>
 {% else %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.views import generic
 
@@ -10,7 +10,11 @@ def garages(request):
     return HttpResponse('these will be all the garages')
 
 def spots(request, garage_id):
-    return HttpResponse(f'parking spots for {garage_id}')
+    garage = get_object_or_404(ParkingGarage, pk=garage_id)
+    floors = [garage.spots.filter(floor=num) for num in range(garage.floors)]
+    print(floors)
+    context = {'garage': garage, 'floors': floors}
+    return render(request, 'parkview/spots.html', context)
 
 
 class GaragesView(generic.ListView):
@@ -22,7 +26,3 @@ class GaragesView(generic.ListView):
         # no loc calc right now
         return getattr(ParkingGarage, 'objects').all()[:10]
 
-
-class SpotView(generic.DetailView):
-    model = ParkingGarage
-    template_name = 'parkview/spots.html'

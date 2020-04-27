@@ -4,5 +4,5 @@ from . import views
 app_name = 'parkview'
 urlpatterns = [
     path('', views.GaragesView.as_view(), name='garages'),
-    path('<int:pk>/', views.SpotView.as_view(), name='spots')
+    path('<int:garage_id>/', views.spots, name='spots')
 ]
