@@ -4,7 +4,7 @@ from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeFie
 # Create your models here.
 
 class CreditCard(models.Model):
-    cid   = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    customer   = models.OneToOneField(Customer, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     cc_number = CardNumberField('card number')
     cc_expiry = CardExpiryField('expiration date')

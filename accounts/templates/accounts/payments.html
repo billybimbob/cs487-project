@@ -8,6 +8,26 @@
         </div>
     </div>
 </div>
+    {% if cards %}
+        {% for card in cards %}
+            <div class="content-section">
+                <div class="media">
+                    <div class="media-body">
+                        <p>Card ending in {{ card.cc_number.12 }}{{ card.cc_number.13 }}{{ card.cc_number.14 }}{{ card.cc_number.15 }}</p>
+                        <p>Expires {{ card.cc_expiry }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="content-section">
+            <div class="media">
+                <div class="media-body">
+                    <p>No cards added.</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
