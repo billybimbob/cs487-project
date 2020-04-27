@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import ugettext_lazy
 from .models import User, Member, Customer
 
+admin.site.site_header = 'Parking Application'
 admin.site.register(Member)
 admin.site.register(Customer)
 
