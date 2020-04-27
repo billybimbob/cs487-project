@@ -27,7 +27,17 @@ def payment_page(request):
                 payment = Payment()
                 payment.paid_by = credit_card
                 payment.amount = 10
-                payment.save()
+
+                spot = ParkingSpot.objects.get(id=request.session['spot'])
+                spot.used_by = License.objects.get(id=request.session['plate'])
+
+                try: 
+                    payment.save()
+                    spot.save()
+                except IntegrityError:
+                    messages.error(request, 'License is already used')
+                    return redirect('/parkview/license/')
+                
                 messages.success(request, f'Your payment was successful')
 
                 request.session['billing_name'] = credit_card.cc_name
@@ -60,21 +70,14 @@ def payment_page(request):
 
 
 def payment_complete(request):
-    spot = ParkingSpot.objects.get(id=request.session['spot'])
-    spot.used_by = License.objects.get(id=request.session['plate'])
-
-    try:
-        spot.save()
-    except IntegrityError:
-        messages.error(request, 'License is already used')
-        return redirect('/parkview/license/')
 
     context = {
         'title': 'Payment Complete',
         'billing_name': request.session['billing_name'],
         'amount': request.session['amount'],
         'cc_number': request.session['cc_number'],
-        'spot': spot
+        'spot': ParkingSpot.objects.get(id=request.session['spot']),
+        'plate': License.objects.get(id=request.session['plate'])
     }
 
     return render(request, 'payments/payment-complete.html', context)
