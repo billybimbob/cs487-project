@@ -123,6 +123,18 @@ color: #333
 font-size: 36px;
 }
 
+.garage-btn:hover {
+background-color: #7e42c2;
+}
+
+.radiobtn {
+font-size: 20px;
+}
+
+.move {
+padding-top: 20px;
+}
+
 .option-btn a {
     color: black;
 }
