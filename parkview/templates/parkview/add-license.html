@@ -2,13 +2,16 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+<div class="container jumbo">
 <div class="content-section">
     {% if licenses and licenses|length > 1 %}
     <form method="POST">
         {% csrf_token %}
         {% for license in licenses %}
+            <div class="radiobtn">
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ license.id }}">
             <label for="choice{{ forloop.counter }}">{{ license.value }}</label><br>
+            </div>
         {% endfor %}
         <input type="submit" value="Use License">
     </form>
@@ -17,13 +20,15 @@
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
+            <div class="move">
             <legend class="border-bottom mb-4">Add License Plate</legend>
             {{ form | crispy }}
+            </div>
         </fieldset>
         <div class="form-group">
             <button class="btn btn-outline-info" type="submit">Add</button>
         </div>
     </form>
 </div>
-
+</div>
 {% endblock content %}
