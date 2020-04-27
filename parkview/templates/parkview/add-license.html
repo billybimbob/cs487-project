@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="content-section">
-    {% if licenses and len(licenses)>1 %}
+    {% if licenses and licenses|length > 1 %}
     <form method="POST">
         {% csrf_token %}
         {% for license in licenses %}

@@ -6,6 +6,8 @@ from payments.models import CreditCard
 from .forms import UserSignupForm, UserUpdateForm
 from payments.forms import AddCreditCard
 from django.contrib.auth.decorators import login_required
+from parkview.forms import AddLicenseForm
+from parkview.models import License
 
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
@@ -31,14 +33,27 @@ def signup(request):
 def account_info(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
+        l_form = AddLicenseForm(request.POST, instance=request.user)
         if u_form.is_valid():
             u_form.save()
             messages.success(request, f'Your account has been updated!')
             return redirect('/account-info')
+        if l_form.is_valid():
+            plate = License(value=l_form.cleaned_data['value'], owner=request.user.customer)
+            plate.save()
+            messages.success(request, f'Your license plate has been updated!')
+            return redirect('/account-info')
     else:
         u_form = UserUpdateForm(instance=request.user)
+        l_form = AddLicenseForm(instance=request.user)
 
-    return render(request, 'accounts/account.html', {'u_form': u_form})
+    context = {
+        'u_form': u_form,
+        'l_form': l_form,
+        'plates': request.user.customer.licenses.all()
+    }
+
+    return render(request, 'accounts/account.html', context)
 
 
 def account_spots(request):
@@ -64,8 +79,7 @@ def account_payments(request):
     context = {
         'title': 'Payments',
         'cards': CreditCard.objects.filter(customer=request.user.customer),
-        'form': add_form,
-        'plates': License.objects.filter(owner=request.user.customer)
+        'form': add_form
     }
 
     return render(request, 'accounts/payments.html', context)
