@@ -2,17 +2,18 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-{% if licenses %}
+<div class="content-section">
+    {% if licenses and len(licenses)>1 %}
     <form method="POST">
         {% csrf_token %}
         {% for license in licenses %}
             <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ license.id }}">
             <label for="choice{{ forloop.counter }}">{{ license.value }}</label><br>
         {% endfor %}
-        <input type="submit" value="license">
+        <input type="submit" value="Use License">
     </form>
-{% else %}
-<div class="content-section">
+    {% endif %}
+
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
@@ -24,6 +25,5 @@
         </div>
     </form>
 </div>
-{% endif %}
 
 {% endblock content %}

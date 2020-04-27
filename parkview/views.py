@@ -42,18 +42,16 @@ def add_license(request):
     else: 
         add_form = AddLicenseForm()
 
-
+    context = {
+        'title': 'Payments',
+        'form': add_form
+    }
     if str(request.user) != 'AnonymousUser':
         context = {
-            'title': 'Payments',
-            'form': add_form,
-            'licenses': License.objects.filter(owner=request.user.customer)
-        }
-    else:
-        context = {
-        'title': 'Payments',
-        'form': add_form,
-    }
+            **{'licenses': request.user.customer.licenses.all()},
+            **context
+        } 
+
 
     return render(request, 'parkview/add-license.html', context)
 
