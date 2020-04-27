@@ -70,8 +70,7 @@ def add_license(request):
     }
     if str(request.user) != 'AnonymousUser':
         licenses = request.user.customer.licenses.all()
-        context = {**context, **{'licenses': licenses}} 
-
+        context = {**context, **{'licenses': licenses}}
     return render(request, 'parkview/add-license.html', context)
 
 

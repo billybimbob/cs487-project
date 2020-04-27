@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.db import IntegrityError
 from parkview.models import ParkingSpot, License
+from accounts.models import Customer
 from .models import CreditCard, Payment
 from .forms import AddCreditCard
-from accounts.models import Customer
 
 # Create your views here
 
@@ -61,7 +62,13 @@ def payment_page(request):
 def payment_complete(request):
     spot = ParkingSpot.objects.get(id=request.session['spot'])
     spot.used_by = License.objects.get(id=request.session['plate'])
-    spot.save()
+
+    try:
+        spot.save()
+    except IntegrityError:
+        messages.error(request, 'License is already used')
+        return redirect('/parkview/license/')
+
     context = {
         'title': 'Payment Complete',
         'billing_name': request.session['billing_name'],
