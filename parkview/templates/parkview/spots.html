@@ -1,14 +1,29 @@
 {% extends "accounts/base.html" %}
 {% block content %}
 
-<h1>{{ garage }}</h1>
+<h1>{{ garage.name }}</h1>
+
+<h2>Information<h2>
 <ul>
-{% for floor in floors %}
-    <h2>Floor {{ forloop.counter }}</h2>
-    {% for spot in floor %}
-        <li>{{ spot }}</li>
-    {% endfor %}
-{% endfor %}
+    <li>{{ garage.street }}</li>
+    <li>{{ garage.city }}, {{ garage.country }}</li>
+    <li>{{ garage.zip_code }}</li>
 </ul>
+
+<h2>Parking Spots</h2>
+{% for floor in floors %}
+    <h3>Floor {{ forloop.counter }}</h3>
+    <div class="list-group">
+    {% for spot in floor %}
+        <a class="list-group-item" href="{% url 'parkview:parkspot' spot.id %}">
+        {% if spot.used_by is None %}
+            Open
+        {% else %}
+            Used by {{ spot.used_by }}
+        {% endif %}
+        </a>
+    {% endfor %}
+    </div>
+{% endfor %}
 
 {% endblock content %}

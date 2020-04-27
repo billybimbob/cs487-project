@@ -12,10 +12,11 @@ def garages(request):
 def spots(request, garage_id):
     garage = get_object_or_404(ParkingGarage, pk=garage_id)
     floors = [garage.spots.filter(floor=num) for num in range(garage.floors)]
-    print(floors)
     context = {'garage': garage, 'floors': floors}
     return render(request, 'parkview/spots.html', context)
 
+def parkspot(request, spot_id):
+    return HttpResponse(f'looking at id {spot_id}')
 
 class GaragesView(generic.ListView):
     template_name = 'parkview/garages.html'

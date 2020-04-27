@@ -3,9 +3,9 @@
 <h1>Parking Garages Near Me</h1>
 
 {% if nearby_garages %}
-    <ul>
+    <ul class="list-group">
     {% for garage in nearby_garages %}
-        <li>
+        <li class="list-group-item">
             <a href="{% url 'parkview:spots' garage.id %}">{{ garage.name }}</a>
         </li>
     {% endfor %}

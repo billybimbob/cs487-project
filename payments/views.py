@@ -24,6 +24,8 @@ def payment_page(request):
             payment.amount = 0
             payment.save()
             messages.success(request, f'Your payment was successful')
+            request.session['payment'] = payment
+            request.session['credit_card'] = credit_card
             return redirect('/payments/payment-complete')
     else: 
         add_form = AddCreditCard()
