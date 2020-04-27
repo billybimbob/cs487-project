@@ -134,3 +134,12 @@ font-size: 20px;
 .move {
 padding-top: 20px;
 }
+
+.option-btn a {
+    color: black;
+}
+
+.option-btn:hover, .option-btn a:hover {
+    background-color: #7e42c2;
+    color: white;
+}
