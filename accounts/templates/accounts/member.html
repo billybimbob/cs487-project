@@ -1,4 +1,6 @@
 {% extends "parkview/confirm.html" %}
+{% include "accounts/base-account.html" %}
+
 {% block prompt %}
 
 <h1>Become a Member {{ user.first_name }}!</h1>
@@ -7,4 +9,4 @@
     (A member will charge you a monthly amount 
     on your credit card)
 </p>
-{% endblock %}
+{% endblock %}\

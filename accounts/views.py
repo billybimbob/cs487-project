@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.utils.datastructures import MultiValueDictKeyError
 
 from .models import Customer, Member
 from .forms import UserSignupForm, UserUpdateForm
@@ -10,6 +9,7 @@ from payments.models import CreditCard, Payment
 from payments.forms import AddCreditCard
 from parkview.forms import AddLicenseForm
 from parkview.models import License
+from parkview.views import get_confirm_response
 
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
@@ -36,11 +36,7 @@ def confirm_member(request):
         return redirect('/account-info')
 
     elif request.method == 'POST':
-        try:
-            response = request.POST['confirm']
-        except MultiValueDictKeyError:
-            response = 'cancel'
-
+        response = get_confirm_response(request)
         if response == 'confirm':
             credit_card = CreditCard.objects.get(customer=request.user.customer)
             

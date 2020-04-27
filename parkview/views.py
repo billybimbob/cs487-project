@@ -16,15 +16,17 @@ def spots(request, garage_id):
     context = {'garage': garage, 'floors': floors}
     return render(request, 'parkview/spots.html', context)
 
+def get_confirm_response(request):
+    try:
+        response = request.POST['confirm'].lower()
+    except MultiValueDictKeyError:
+        response = 'cancel'
+    return response
 
 def parkspot(request, spot_id):
     spot = get_object_or_404(ParkingSpot, pk=spot_id)
     if request.method == 'POST':
-        try:
-            response = request.POST['confirm']
-        except MultiValueDictKeyError:
-            response = 'cancel'
-            
+        response = get_confirm_response(request)
         if response == 'confirm':
             request.session['spot'] = spot_id
             return redirect(f'/parkview/license')

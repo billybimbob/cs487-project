@@ -1,0 +1,36 @@
+{% extends "accounts/base.html" %}
+{% block sidebar %}
+<div class="container jumbo">
+  <div class="content-section">
+    <div class="media">
+            <div class="media-body">
+                <h2 class="account-heading">Links</h2>
+            </div>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item list-group-item-action option-btn">
+            <a href="{% url 'accounts:account-info' %}" class="stretched-link text-decoration-none">
+              Info
+            </a>
+          </li>
+          <li class="list-group-item list-group-item-action option-btn">
+            <a href="{% url 'accounts:account-payments' %}" class="stretched-link text-decoration-none">
+              Payment
+            </a>
+          </li>
+          <li class="list-group-item list-group-item-action option-btn">
+            <a href="{% url 'accounts:account-spots' %}" class="stretched-link text-decoration-none">Spots</a>
+          </li>
+          {% if user.member %}
+            <li class="list-group-item option-btn disabled">
+                  <a href='#'>Member since {{ user.member.start_date }}</a>
+            </li>
+          {% else %}
+            <li class="list-group-item list-group-item-action option-btn">
+              <a href="{% url 'accounts:confirm-member' %}" class="stretched-link text-decoration-none">Member Sign Up</a>
+            </li>
+          {% endif %}
+      </ul>
+  </div>
+</div>
+{% endblock sidebar %}
