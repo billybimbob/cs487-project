@@ -1,23 +1,38 @@
 {% extends "accounts/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="content-section">
-    <div class="media">
-        <div class="media-body">
-            <h2 class="account-heading">Payment</h2>
+<div class="container jumbo">
+    <div class="content-section">
+        <div class="media">
+            <div class="media-body">
+                <h2 class="account-heading">Payment</h2>
+            </div>
         </div>
     </div>
-</div>
-<div class="content-section">
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Add Card</legend>
-            {{ form | crispy }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Add</button>
-        </div>
-    </form>
+    <div class="content-section">
+        {% if cards and cards|length > 0 %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for card in cards %}
+                <div class="radiobtn">
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ license.id }}">
+                <label for="choice{{ forloop.counter }}">**** {{ card.cc_number.12 }}{{ card.cc_number.13 }}{{ card.cc_number.14 }}{{ card.cc_number.15 }}</label><br>
+                </div>
+            {% endfor %}
+            <input type="submit" value="Use License">
+        </form>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add Card</legend>
+                {{ form | crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Add</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock content %}

@@ -48,9 +48,14 @@ def add_license(request):
                     
                 plate = License(value=add_form.cleaned_data['value'], owner=owner)
                 plate.save()
+
+                request.session['plate'] = plate.value
+            
             else:
                 license_id = request.POST['choice']
-                plate = License.objects.filter(id=license_id) 
+                plate = License.objects.filter(id=license_id).first() 
+                
+                request.session['plate'] = plate.value
             
             if str(request.user) == 'AnonymousUser':
                 request.session['cid'] = plate.owner.cid
