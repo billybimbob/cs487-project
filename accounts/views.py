@@ -64,7 +64,8 @@ def account_payments(request):
     context = {
         'title': 'Payments',
         'cards': CreditCard.objects.filter(customer=request.user.customer),
-        'form': add_form
+        'form': add_form,
+        'plates': License.objects.filter(owner=request.user.customer)
     }
 
     return render(request, 'accounts/payments.html', context)

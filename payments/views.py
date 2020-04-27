@@ -10,10 +10,12 @@ def payment_page(request):
     if request.method == 'POST':
         add_form = AddCreditCard(request.POST)
         if add_form.is_valid():
-            customer = Customer()
-            customer.save()
             credit_card = CreditCard()
-            credit_card.customer = customer
+            if(request.user == None):
+                credit_card.customer = Customer.objects.filter(cid=request.session['cid'])
+            else:
+                credit_card.customer = request.user.customer
+
             credit_card.cc_name = add_form.cleaned_data['cc_name']
             credit_card.cc_number = add_form.cleaned_data['cc_number']
             credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']

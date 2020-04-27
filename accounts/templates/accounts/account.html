@@ -17,6 +17,16 @@
             <button class="btn btn-outline-info" type="submit">Update</button>
         </div>
     </form>
+    <div class="media">
+        <div class="media-body">
+            <h3 class="account-heading">License Plates</h3>
+            <ul class="list-group">
+                {% foreach plate in plates %}
+                    <li class="list-group-item">{{ plate.value }}</li>
+                {% endfor %}
+            </li>
+        </div>
+    </div>
 </div>
 {% endblock content %}
 

@@ -1,11 +1,11 @@
 from django.db import models
-from accounts.models import Member
+from accounts.models import Customer
 
 # Create your models here.
 
 class License(models.Model):
     value = models.CharField(max_length=7, unique=True)
-    owner = models.ForeignKey(Member, on_delete=models.PROTECT, related_name='licenses')
+    owner = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='licenses')
     
     def __str__(self):
         return f'temp license {self.value} for {self.owner}'
