@@ -43,7 +43,15 @@ def add_license(request):
     else: 
         add_form = AddLicenseForm()
 
-    context = {
+
+    if str(request.user) != 'AnonymousUser':
+        context = {
+            'title': 'Payments',
+            'form': add_form,
+            'licenses': License.objects.filter(owner=request.user.customer)
+        }
+    else:
+        context = {
         'title': 'Payments',
         'form': add_form,
     }
