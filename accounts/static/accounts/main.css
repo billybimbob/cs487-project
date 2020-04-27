@@ -13,7 +13,7 @@ ul {
 }
 
 .bg-steel {
-    background-color: #6b24bd;
+    background-color: #7e42c2;
     padding-top: 20px;
 }
 
@@ -110,11 +110,19 @@ font-size: 30px;
 }
 
 .btn-outline-info:hover {
-background-color: #6b24bd;
+background-color: #7e42c2;
 border-color: #333;
 }
 
 .btn-outline-info {
 border-color: #333;
 color: #333
+}
+
+.garages-text {
+font-size: 36px;
+}
+
+.garage-btn:hover {
+background-color: #7e42c2;
 }
