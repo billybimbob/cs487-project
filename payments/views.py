@@ -24,13 +24,13 @@ def payment_page(request):
                 credit_card.save()
                 payment = Payment()
                 payment.paid_by = credit_card
-                payment.amount = 0
+                payment.amount = 10
                 payment.save()
                 messages.success(request, f'Your payment was successful')
 
                 request.session['billing_name'] = credit_card.cc_name
                 request.session['cc_number'] = credit_card.cc_number
-
+                request.session['amount'] = payment.amount
 
             else:
                 credit_card_id = request.POST['choice']
