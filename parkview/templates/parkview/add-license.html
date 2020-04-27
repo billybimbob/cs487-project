@@ -1,6 +1,17 @@
 {% extends "accounts/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+{% if licenses %}
+    <form method="POST">
+        {% csrf_token %}
+        {% for license in licenses %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ license.id }}">
+            <label for="choice{{ forloop.counter }}">{{ license.value }}</label><br>
+        {% endfor %}
+        <input type="submit" value="license">
+    </form>
+{% else %}
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
@@ -13,4 +24,6 @@
         </div>
     </form>
 </div>
+{% endif %}
+
 {% endblock content %}
