@@ -12,7 +12,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 def spots(request, garage_id):
     garage = get_object_or_404(ParkingGarage, pk=garage_id)
-    floors = [garage.spots.filter(floor=num) for num in range(garage.floors)]
+    floors = [garage.spots.filter(floor=num) for num in range(1,garage.floors+1)]
     context = {'garage': garage, 'floors': floors}
     return render(request, 'parkview/spots.html', context)
 

@@ -2,13 +2,15 @@
 {% block content %}
 
 <div class="container jumbo">
-<h1>{{ garage.name }}</h1>
+<div class="cntr">
+    <h1>{{ garage.name }}</h1>
 
-<ul class="list-inline">
-    <p class="garage_text gtext">{{ garage.street }}
-    {{ garage.city }}, {{ garage.country }}
-    {{ garage.zip_code }}</p>
-</ul>
+    <ul class="list-inline">
+        <p class="garage_text gtext">{{ garage.street }}
+        {{ garage.city }}, {{ garage.country }}
+        {{ garage.zip_code }}</p>
+    </ul>
+    </div>
 </div>
 
 <h2>Parking Spots</h2>
