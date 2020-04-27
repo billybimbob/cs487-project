@@ -32,13 +32,11 @@ def add_license(request):
                 customer.save()
                 owner = customer
                 
-            print(f'creating license with owner {owner}')
             plate = License(value=add_form.cleaned_data['value'], owner=owner)
-            print(f'saving license {plate}')
             plate.save()
 
             if str(request.user) != 'AnonymousUser':
-                return redirect('/account-payments')
+                return redirect('/accounts-payments')
             else:
                 request.session['cid'] = plate.owner.cid
                 return redirect('/payments/payment')
