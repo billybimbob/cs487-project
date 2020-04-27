@@ -35,7 +35,7 @@ def add_license(request):
             plate.save()
 
             if str(request.user) != 'AnonymousUser':
-                return redirect('/account-payments')
+                return redirect('/accounts-payments')
             else:
                 request.session['cid'] = plate.owner.cid
                 return redirect('/payments/payment')
