@@ -23,23 +23,24 @@ def parkspot(request, spot_id):
 def add_license(request):
     if request.method == 'POST':
         add_form = AddLicenseForm(request.POST)
+        print('new form')
         if add_form.is_valid():
-            plate = License()
-            print(request.user)
             if str(request.user) != 'AnonymousUser':
-                plate.owner = request.user.customer
+                owner = request.user.customer
             else:
                 customer = Customer()
                 customer.save()
-                plate.owner = customer
-
-            plate.value = add_form.cleaned_data['value']
+                owner = customer
+                
+            print(f'creating license with owner {owner}')
+            plate = License(value=add_form.cleaned_data['value'], owner=owner)
+            print(f'saving license {plate}')
             plate.save()
 
-            if request.user != 'AnonymousUser':
+            if str(request.user) != 'AnonymousUser':
                 return redirect('/account-payments')
             else:
-                request.session['cid'] = plate.customer.cid
+                request.session['cid'] = plate.owner.cid
                 return redirect('/payments/payment')
     else: 
         add_form = AddLicenseForm()

@@ -8,7 +8,7 @@ class License(models.Model):
     owner = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='licenses')
     
     def __str__(self):
-        return f'temp license {self.value} for {self.owner}'
+        return f'License {self.value} for {self.owner}'
 
 
 class TempLicense(models.Model):
