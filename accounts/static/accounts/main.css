@@ -111,4 +111,10 @@ font-size: 30px;
 
 .btn-outline-info:hover {
 background-color: #6b24bd;
+border-color: #333;
+}
+
+.btn-outline-info {
+border-color: #333;
+color: #333
 }
