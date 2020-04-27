@@ -14,21 +14,20 @@
 <h2>Parking Spots</h2>
 {% for floor in floors %}
     <h3>Floor {{ forloop.counter }}</h3>
-    <ul class="list-group d-flex flex-row flex-wrap">
+    <div class="list-group d-flex flex-row flex-wrap">
     {% for spot in floor %}
-        {% if spot.used_by is None %}
-            <li class="col-md-6 list-group-item list-group-item-action">
-                <a class="list-group-item-action stretched-link" href="{% url 'parkview:parkspot' spot.id %}">
-                    Open
-                </a>
-            </li>
+        {% if forloop.counter|divisibleby:2 %}
+            <a class="col-md-6 list-group-item list-group-item-action"
+                href="{% url 'parkview:parkspot' spot.id %}">
+                Open
+            </a>
         {% else %}
-            <li class="col-md-6 list-group-item disabled">
+            <a class="col-md-6 list-group-item disabled" href="#">
                 Used by {{ spot.used_by }}
-            </li>
+            </a>
         {% endif %}
     {% endfor %}
-    </ul>
+    </div>
 {% endfor %}
 
 {% endblock content %}

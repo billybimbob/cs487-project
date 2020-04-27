@@ -23,7 +23,6 @@ def parkspot(request, spot_id):
 def add_license(request):
     if request.method == 'POST':
         add_form = AddLicenseForm(request.POST)
-        print('new form')
         if add_form.is_valid():
             if str(request.user) != 'AnonymousUser':
                 owner = request.user.customer
