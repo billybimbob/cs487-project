@@ -123,6 +123,11 @@ color: #333
 font-size: 36px;
 }
 
-.garage-btn:hover {
-background-color: #7e42c2;
+.option-btn a {
+    color: black;
+}
+
+.option-btn:hover, .option-btn a:hover {
+    background-color: #7e42c2;
+    color: white;
 }

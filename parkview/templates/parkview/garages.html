@@ -9,8 +9,8 @@
 {% if nearby_garages %}
     <ul class="list-group">
     {% for garage in nearby_garages %}
-        <li class="btn list-group-item list-group-item-action garages-text garage-btn">
-            <a class="text-dark stretched-link text-decoration-none" href="{% url 'parkview:spots' garage.id %}">{{ garage.name }}</a>
+        <li class="list-group-item list-group-item-action garages-text option-btn">
+            <a class="stretched-link text-decoration-none" href="{% url 'parkview:spots' garage.id %}">{{ garage.name }}</a>
         </li>
     {% endfor %}
     </ul>

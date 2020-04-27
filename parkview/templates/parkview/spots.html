@@ -17,7 +17,7 @@
     <div class="list-group d-flex flex-row flex-wrap">
     {% for spot in floor %}
         {% if spot.used_by is None %}
-            <a class="col-md-6 list-group-item list-group-item-action"
+            <a class="col-md-6 list-group-item list-group-item-action option-btn"
                 href="{% url 'parkview:parkspot' spot.id %}">
                 Open
             </a>
