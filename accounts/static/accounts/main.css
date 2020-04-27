@@ -86,53 +86,53 @@ a.article-title:hover {
 }
 
 .display-style {
-font: helvetica;
-font-size: 72px;
-padding-bottom: 36px;
+    font: helvetica;
+    font-size: 72px;
+    padding-bottom: 36px;
 }
 
 .mr-4 {
-font-size: 30px;
+    font-size: 30px;
 }
 
 .jumbo {
-padding-top: 40px;  
+    padding-top: 48px;
 }
 
 .brk {
-display: block;
-border-style: solid;
-border-width: 1.8px;
+    display: block;
+    border-style: solid;
+    border-width: 1.8px;
 }
 
 .gtext {
-font-size: 30px;
+    font-size: 30px;
 }
 
 .btn-outline-info:hover {
-background-color: #7e42c2;
-border-color: #333;
+    background-color: #7e42c2;
+    border-color: #333;
 }
 
 .btn-outline-info {
-border-color: #333;
-color: #333
+    border-color: #333;
+    color: #333
 }
 
 .garages-text {
-font-size: 36px;
+    font-size: 36px;
 }
 
 .garage-btn:hover {
-background-color: #7e42c2;
+    background-color: #7e42c2;
 }
 
 .radiobtn {
-font-size: 20px;
+    font-size: 20px;
 }
 
 .move {
-padding-top: 20px;
+    padding-top: 20px;
 }
 
 .option-btn a {
@@ -142,4 +142,8 @@ padding-top: 20px;
 .option-btn:hover, .option-btn a:hover {
     background-color: #7e42c2;
     color: white;
+}
+
+.cntr {
+    text-align: center;
 }
