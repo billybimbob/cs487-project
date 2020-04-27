@@ -25,7 +25,7 @@
             </a>
         {% else %}
             <a class="col-md-4 list-group-item disabled" href="#">
-                Used by {{ spot.used_by }}
+                Used by {{ spot.used_by.value }}
             </a>
         {% endif %}
     {% endfor %}

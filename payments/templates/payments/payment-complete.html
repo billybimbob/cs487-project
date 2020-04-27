@@ -12,7 +12,7 @@
     <div class="media">
         <div class="media-body">
             <h4>Thank you for your order {{ billing_name }}!</h4>
-            <p>Parking Spot: {{ spot }}<p>
+            <p>Parking Spot: {{ spot.garage.name }} on floor {{ spot.floor }}<p>
             <p>License Plate: {{ plate }}</p>
             <p>Paid: ${{ amount }}
             <p>Payment: **** {{ cc_number.12 }}{{ cc_number.13 }}{{ cc_number.14 }}{{ cc_number.15 }}</p>

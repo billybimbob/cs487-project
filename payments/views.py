@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from parkview.models import ParkingSpot, License
 from .models import CreditCard, Payment
 from .forms import AddCreditCard
 from accounts.models import Customer
@@ -33,7 +34,6 @@ def payment_page(request):
                 request.session['amount'] = payment.amount
 
             else:
-                credit_card_id = request.POST['choice']
                 credit_card = CreditCard.objects.filter(customer=request.user.customer).first() 
 
                 request.session['billing_name'] = credit_card.cc_name
@@ -59,13 +59,15 @@ def payment_page(request):
 
 
 def payment_complete(request):
-
+    spot = ParkingSpot.objects.get(id=request.session['spot'])
+    spot.used_by = License.objects.get(id=request.session['plate'])
+    spot.save()
     context = {
         'title': 'Payment Complete',
         'billing_name': request.session['billing_name'],
         'amount': request.session['amount'],
         'cc_number': request.session['cc_number'],
-        'spot': request.session['spot']
+        'spot': spot
     }
 
     return render(request, 'payments/payment-complete.html', context)
