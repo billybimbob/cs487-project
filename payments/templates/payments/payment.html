@@ -30,12 +30,20 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <div class="move">
-                <legend class="border-bottom mb-4">Add Card</legend>
+                <legend class="border-bottom mb-4">
+                    {% if card %} Update Card
+                    {% else %}    Add Card
+                    {% endif %}
+                </legend>
                 {{ form | crispy }}
                 </div>
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Add</button>
+                <button class="btn btn-outline-info" type="submit">
+                    {% if card %} Update
+                    {% else %}    Add
+                    {% endif %}
+                </button>
             </div>
         </form>
     </div>

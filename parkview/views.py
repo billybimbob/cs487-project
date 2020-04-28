@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
-from django.db import IntegrityError
 from django.contrib import messages
 from django.utils.datastructures import MultiValueDictKeyError
 
@@ -46,21 +45,16 @@ def add_license(request):
                 customer = Customer()
                 customer.save()
                 owner = customer
-                
             plate = License(value=add_form.cleaned_data['value'], owner=owner)
-            try:
-                plate.save()
-            except IntegrityError:
-                messages.error(request, 'License already exists')
-                redirect('/account-info')
-        else:
-            try:
-                license_id = request.POST['choice']
-                plate = License.objects.filter(id=license_id).first()
-            except MultiValueDictKeyError:
-                messages.error(request, f'You must select a license.')
-                return redirect('/parkview/license')
+            plate.save()
 
+        elif 'choice' in request.POST:
+            license_id = request.POST['choice']
+            plate = License.objects.get(id=license_id)
+        else:
+            messages.error(request, 'License is invalid')
+            return redirect('/parkview/license')
+        
         request.session['plate'] = plate.id
         if str(request.user) == 'AnonymousUser':
             request.session['cid'] = plate.owner.cid
@@ -75,6 +69,7 @@ def add_license(request):
     if str(request.user) != 'AnonymousUser':
         licenses = request.user.customer.licenses.all()
         context = {**context, **{'licenses': licenses}}
+
     return render(request, 'parkview/add-license.html', context)
 
 
