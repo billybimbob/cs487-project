@@ -13,20 +13,16 @@
     </div>
 </div>
 
-<h2>Parking Spots</h2>
+<h2 class="move">Parking Spots</h2>
 {% for floor in floors %}
-    <h3>Floor {{ forloop.counter }}</h3>
+    <h3 class="move">Floor {{ forloop.counter }}</h3>
     <div class="list-group d-flex flex-row flex-wrap">
     {% for spot in floor %}
         {% if spot.used_by is None %}
             <a class="col-md-4 list-group-item list-group-item-action option-btn"
-                href="{% url 'parkview:parkspot' spot.id %}">
-                Open
-            </a>
+                href="{% url 'parkview:parkspot' spot.id %}">Open</a>
         {% else %}
-            <a class="col-md-4 list-group-item disabled" href="#">
-                Used by {{ spot.used_by.value }}
-            </a>
+            <a class="col-md-4 list-group-item disabled" href="#">Used by {{ spot.used_by.value }}</a>
         {% endif %}
     {% endfor %}
     </div>

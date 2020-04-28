@@ -9,18 +9,15 @@
             </div>
         </div>
         
-        {% if cards and cards|length > 0 %}
+        {% if card %}
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <div class="move">
-                <legend class="border-bottom mb-4">Use An Existing Credit Card</legend>
-                {% for card in cards %}
+                    <legend class="border-bottom mb-4">Use An Existing Credit Card</legend>
                     <div class="radiobtn">
-                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ license.id }}">
-                    <label for="choice{{ forloop.counter }}">**** {{ card.cc_number.12 }}{{ card.cc_number.13 }}{{ card.cc_number.14 }}{{ card.cc_number.15 }}</label><br>
+                        <label>**** {{ card.cc_number.12 }}{{ card.cc_number.13 }}{{ card.cc_number.14 }}{{ card.cc_number.15 }}</label><br>
                     </div>
-                {% endfor %}
                 </div>
             </fieldset>
             <div class="form-group">

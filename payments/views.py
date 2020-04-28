@@ -11,60 +11,54 @@ from .forms import AddCreditCard
 def payment_page(request):
     if request.method == 'POST':
         add_form = AddCreditCard(request.POST)
-        try:
-            if add_form.is_valid():
-                credit_card = CreditCard()
-                if str(request.user) != 'AnonymousUser':
-                    credit_card.customer = request.user.customer
-                else:
-                    credit_card.customer = Customer.objects.filter(cid=request.session['cid']).first()
-
-                credit_card.cc_name = add_form.cleaned_data['cc_name']
-                credit_card.cc_number = add_form.cleaned_data['cc_number']
-                credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']
-                credit_card.cc_code = add_form.cleaned_data['cc_code']
-                credit_card.save()
-                payment = Payment()
-                payment.paid_by = credit_card
-                payment.amount = 10
-
-                spot = ParkingSpot.objects.get(id=request.session['spot'])
-                spot.used_by = License.objects.get(id=request.session['plate'])
-
-                try: 
-                    payment.save()
-                    spot.save()
-                except IntegrityError:
-                    messages.error(request, 'License is already used')
-                    return redirect('/parkview/license/')
-                
-                messages.success(request, f'Your payment was successful')
-
-                request.session['billing_name'] = credit_card.cc_name
-                request.session['cc_number'] = credit_card.cc_number
-                request.session['amount'] = payment.amount
-
+        if add_form.is_valid():
+            if str(request.user) != 'AnonymousUser':
+                customer = request.user.customer
             else:
-                credit_card = CreditCard.objects.filter(customer=request.user.customer).first() 
+                customer = Customer.objects.get(cid=request.session['cid'])
 
-                request.session['billing_name'] = credit_card.cc_name
-                request.session['cc_number'] = credit_card.cc_number
+            try:
+                credit_card = CreditCard.objects.get(customer=customer)
+            except CreditCard.DoesNotExist:
+                credit_card = CreditCard(customer=customer)
 
-            return redirect('/payments/payment-complete')
+            credit_card.cc_name   = add_form.cleaned_data['cc_name']
+            credit_card.cc_number = add_form.cleaned_data['cc_number']
+            credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']
+            credit_card.cc_code   = add_form.cleaned_data['cc_code']
+            credit_card.save()
 
-        except Exception: #figure out actual exception
-            messages.error(request, f'You must select a payment.')
-            
+        else: # guarantee customer as a credit card
+            credit_card = CreditCard.objects.get(customer=request.user.customer)
+
+        payment = Payment()
+        payment.paid_by = credit_card
+        payment.amount = 10
+
+        spot = ParkingSpot.objects.get(id=request.session['spot'])
+        spot.used_by = License.objects.get(id=request.session['plate'])
+
+        try:
+            payment.save()
+            spot.save()
+        except IntegrityError:
+            messages.error(request, 'License is already used')
+            return redirect('/parkview/license/')
+
+        messages.success(request, f'Your payment was successful')
+
+        request.session['billing_name'] = credit_card.cc_name
+        request.session['cc_number'] = credit_card.cc_number
+        request.session['amount'] = payment.amount
+
+        return redirect('/payments/payment-complete')
+
     add_form = AddCreditCard()
-    context = {
-        'title': 'Payments',
-        'form': add_form
-    }
+    context = {'title': 'Payments','form': add_form}
+
     if str(request.user) != 'AnonymousUser':
-        context = {
-            **{'cards': CreditCard.objects.filter(customer=request.user.customer)},
-            **context
-        } 
+        credit_card = CreditCard.objects.get(customer=request.user.customer)
+        context = {**context, **{'card': credit_card}}
 
     return render(request, 'payments/payment.html', context)
 

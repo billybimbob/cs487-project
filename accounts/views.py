@@ -87,26 +87,32 @@ def account_spots(request):
 
 @login_required
 def account_payments(request):
-    print('got here')
+    customer = request.user.customer
+    try:
+        credit_card = CreditCard.objects.get(customer=customer)
+        have_card =True
+    except CreditCard.DoesNotExist:
+        have_card = False
+
     if request.method == 'POST':
         add_form = AddCreditCard(request.POST, instance=request.user)
         if add_form.is_valid():
-            credit_card = CreditCard()
-            credit_card.customer = request.user.customer
+            if not have_card: credit_card = CreditCard(customer=customer)
+            
             credit_card.cc_name = add_form.cleaned_data['cc_name']
             credit_card.cc_number = add_form.cleaned_data['cc_number']
             credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']
             credit_card.cc_code = add_form.cleaned_data['cc_code']
             credit_card.save()
-            messages.success(request, f'Your card has been added!')
+
+            messages.success(request, f'Your card has been {"updated" if have_card else "added"}!')
             return redirect('/account-payments')
-    else: 
+    else:
         add_form = AddCreditCard(instance=request.user)
 
-    context = {
-        'title': 'Payments',
-        'cards': CreditCard.objects.filter(customer=request.user.customer),
-        'form': add_form
-    }
+    context = {'title': 'Payments', 'form': add_form}
+    if have_card:
+        context = {**context, **{'card': credit_card}}
+
 
     return render(request, 'accounts/payments.html', context)
