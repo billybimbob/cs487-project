@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
+from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
-from .models import Customer, Member
-from .forms import UserSignupForm, UserUpdateForm
 from payments.models import CreditCard, Payment
 from payments.forms import AddCreditCard
 from parkview.forms import AddLicenseForm
 from parkview.models import License
 from parkview.views import get_confirm_response
+
+from .models import Customer, Member
+from .forms import UserSignupForm, UserUpdateForm
 
 def home(request):
     return render(request, 'accounts/home.html', {'title': 'Home'})
@@ -38,11 +40,10 @@ def confirm_member(request):
     elif request.method == 'POST':
         response = get_confirm_response(request)
         if response == 'confirm':
-            credit_card = CreditCard.objects.get(customer=request.user.customer)
-            
-            if credit_card is None:
-                print('redirecting')
-                messages.warning(request, 'you must add a credit card')
+            try:
+                credit_card = CreditCard.objects.get(customer=request.user.customer)
+            except CreditCard.DoesNotExist:
+                messages.warning(request, 'You must add a credit card')
                 return redirect('/account-payments')
             
             member = Member(user=request.user)
@@ -64,9 +65,14 @@ def account_info(request):
             u_form.save()
             messages.success(request, f'Your account has been updated!')
             return redirect('/account-info')
-        if l_form.is_valid():
+        elif l_form.is_valid():
             plate = License(value=l_form.cleaned_data['value'], owner=request.user.customer)
-            plate.save()
+            try:
+                plate.save()
+            except IntegrityError:
+                messages.error(request, 'License already exists')
+                return redirect('/account-info')
+
             messages.success(request, f'Your license plate has been updated!')
             return redirect('/account-info')
     else:

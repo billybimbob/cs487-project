@@ -16,26 +16,25 @@ def payment_page(request):
                 customer = request.user.customer
             else:
                 customer = Customer.objects.get(cid=request.session['cid'])
+            
+            credit_card = CreditCard(
+                customer  = customer,
+                cc_name   = add_form.cleaned_data['cc_name'],
+                cc_number = add_form.cleaned_data['cc_number'],
+                cc_expiry = add_form.cleaned_data['cc_expiry'],
+                cc_code   = add_form.cleaned_data['cc_code']
+            )
 
             try:
-                credit_card = CreditCard.objects.get(customer=customer)
-            except CreditCard.DoesNotExist:
-                credit_card = CreditCard(customer=customer)
-
-            credit_card.cc_name   = add_form.cleaned_data['cc_name']
-            credit_card.cc_number = add_form.cleaned_data['cc_number']
-            credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']
-            credit_card.cc_code   = add_form.cleaned_data['cc_code']
-            credit_card.save()
+                credit_card.save()
+            except IntegrityError: #will fail if credit card already exists
+                messages.warning(request, 'Credit cared was not saved to the account')
 
         else: # guarantee customer as a credit card
             credit_card = CreditCard.objects.get(customer=request.user.customer)
 
-        payment = Payment()
-        payment.paid_by = credit_card
-        payment.amount = 10
-
-        spot = ParkingSpot.objects.get(id=request.session['spot'])
+        payment      = Payment(paid_by=credit_card, amount=10)
+        spot         = ParkingSpot.objects.get(id=request.session['spot'])
         spot.used_by = License.objects.get(id=request.session['plate'])
 
         try:
@@ -57,8 +56,11 @@ def payment_page(request):
     context = {'title': 'Payments','form': add_form}
 
     if str(request.user) != 'AnonymousUser':
-        credit_card = CreditCard.objects.get(customer=request.user.customer)
-        context = {**context, **{'card': credit_card}}
+        try:
+            credit_card = CreditCard.objects.get(customer=request.user.customer)
+            context = {**context, **{'card': credit_card}}
+        except CreditCard.DoesNotExist: #do not add to context
+            pass
 
     return render(request, 'payments/payment.html', context)
 

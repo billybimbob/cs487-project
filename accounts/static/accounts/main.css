@@ -96,7 +96,8 @@ a.article-title:hover {
 }
 
 .jumbo {
-    padding-top: 48px;
+    padding-top: 38px;
+    padding-bottom: 20px;
 }
 
 .brk {
@@ -146,9 +147,4 @@ a.article-title:hover {
 
 .cntr {
     text-align: center;
-}
-
-#info {
-    /* bad temp fix */
-    padding-left: 30px;
 }

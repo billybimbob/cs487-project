@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
 from django.views import generic
+from django.db import IntegrityError
 from django.contrib import messages
+from django.utils.datastructures import MultiValueDictKeyError
 
 from accounts.models import Customer
 from .models import ParkingGarage, ParkingSpot, License
 from .forms import AddLicenseForm
-from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 
@@ -39,31 +39,33 @@ def parkspot(request, spot_id):
 def add_license(request):
     if request.method == 'POST':
         add_form = AddLicenseForm(request.POST)
-        try:
-            if add_form.is_valid():
-                if str(request.user) != 'AnonymousUser':
-                    owner = request.user.customer
-                else:
-                    customer = Customer()
-                    customer.save()
-                    owner = customer
-                    
-                plate = License(value=add_form.cleaned_data['value'], owner=owner)
-                plate.save()
+        if add_form.is_valid():
+            if str(request.user) != 'AnonymousUser':
+                owner = request.user.customer
             else:
-                license_id = request.POST['choice']
-                plate = License.objects.filter(id=license_id).first() 
-
-
-            request.session['plate'] = plate.id
-            
-            if str(request.user) == 'AnonymousUser':
-                request.session['cid'] = plate.owner.cid
-            return redirect('/payments/payment')
+                customer = Customer()
+                customer.save()
+                owner = customer
                 
-        except Exception: #figure out actual exception
-            messages.error(request, f'You must select a license.')
-            # fallthrough
+            plate = License(value=add_form.cleaned_data['value'], owner=owner)
+            try:
+                plate.save()
+            except IntegrityError:
+                messages.error(request, 'License already exists')
+                redirect('/account-info')
+        else:
+            try:
+                license_id = request.POST['choice']
+                plate = License.objects.filter(id=license_id).first()
+            except MultiValueDictKeyError:
+                messages.error(request, f'You must select a license.')
+                return redirect('/parkview/license')
+
+        request.session['plate'] = plate.id
+        if str(request.user) == 'AnonymousUser':
+            request.session['cid'] = plate.owner.cid
+
+        return redirect('/payments/payment')
 
     add_form = AddLicenseForm()
     context = {

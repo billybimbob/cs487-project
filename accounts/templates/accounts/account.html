@@ -26,11 +26,15 @@
         <div class="media">
             <div class="media-body">
                 <h3 class="account-heading">License Plates</h3>
-                <ul class="list-group">
-                    {% for plate in plates %}
-                        <li class="list-group-item">Plate: {{ plate.value }}</li>
-                    {% endfor %}
-                </li>
+                {% if plates|length > 0 %}
+                    <ul class="list-group">
+                        {% for plate in plates %}
+                            <li class="list-group-item">Plate: {{ plate.value }}</li>
+                        {% endfor %}
+                    </li>
+                {% else %}
+                    <p>You have no license plates</p>
+                {% endif %}
             </div>
         </div>
         <div class="move">
