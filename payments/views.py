@@ -5,6 +5,7 @@ from parkview.models import ParkingSpot, License
 from accounts.models import Customer
 from .models import CreditCard, Payment
 from .forms import AddCreditCard
+from datetime import timedelta, date
 
 # Create your views here
 
@@ -25,6 +26,7 @@ def payment_page(request):
             credit_card.cc_number = add_form.cleaned_data['cc_number']
             credit_card.cc_expiry = add_form.cleaned_data['cc_expiry']
             credit_card.cc_code = add_form.cleaned_data['cc_code']
+            credit_card.save()
             
         else: # guarantee customer as a credit card
             credit_card = CreditCard.objects.get(customer=request.user.customer)
@@ -68,7 +70,8 @@ def payment_complete(request):
         'amount': request.session['amount'],
         'cc_number': request.session['cc_number'],
         'spot': ParkingSpot.objects.get(id=request.session['spot']),
-        'plate': License.objects.get(id=request.session['plate'])
+        'plate': License.objects.get(id=request.session['plate']),
+        'exp_date': date.today() + timedelta(days=30)
     }
 
     return render(request, 'payments/payment-complete.html', context)
