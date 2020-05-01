@@ -28,8 +28,12 @@ def payment_page(request):
             credit_card.cc_code = add_form.cleaned_data['cc_code']
             credit_card.save()
             
-        else: # guarantee customer as a credit card
-            credit_card = CreditCard.objects.get(customer=request.user.customer)
+        else:
+            try:
+                credit_card = CreditCard.objects.get(customer=request.user.customer)
+            except AttributeError: # bad form
+                messages.error(request, f'Invalid values entered in the credit card')
+                return redirect('/payments/payment')
  
         payment = Payment(paid_by=credit_card, amount=10)
         spot = ParkingSpot.objects.get(id=request.session['spot'])
